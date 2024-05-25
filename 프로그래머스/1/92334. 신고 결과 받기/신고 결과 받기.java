@@ -1,7 +1,4 @@
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 class Solution {
     public int[] solution(String[] id_list, String[] report, int k) {
@@ -12,23 +9,15 @@ class Solution {
         
         // 중복 처리가 필요(같은 신고에 대해서는 무시함)
         // list로 contain해서 찾으니까 시간복잡도 O(n)
-        /*
-        List<String> reportArray = new ArrayList<>();
+        // -> 이런 경우에는 linkedHashSet이나 stream의 distinct를 이용하는 것이 좋음 
         
-        for(String name: report){
-            if(!reportArray.contains(name)) reportArray.add(name);
-        }
-        */
-        HashMap<String,Integer> map = new HashMap<String,Integer>();
+        LinkedHashSet<String> linkedHashSet = new LinkedHashSet<>(Arrays.asList(report));
         
-        for(String name: report){
-            map.put(name, 0);
-        };
-        
+       
         
         int count=1; 
         // 전체 reported 된 횟수 구하기 
-        for(String name: map.keySet()){
+        for(String name: linkedHashSet){
             String[] tempName = name.split(" ");
             
             String reporter = tempName[0];
@@ -49,7 +38,7 @@ class Solution {
            }
         }
         
-        for(String name : map.keySet()){
+        for(String name : linkedHashSet){
             String[] tempName = name.split(" ");
             String reporter = tempName[0];
             String reported = tempName[1];
