@@ -1,25 +1,4 @@
- public class Stack {
-     int top;
-     int[] data;
-     int size;
-     
-     Stack(int size){
-         top = -1;
-         data = new int[size];
-         this.size = size;
-     }
-     void push(int value){
-         data[++top] = value;
-     }
-     int pop(){
-         return data[top--];
-     }
-     boolean checkDuplication(){
-         if(top<=0) return false;
-         if(data[top] == data[top-1]) return true;
-         return false;
-     }
-}
+import java.util.Stack;
 
 class Solution {
     public int solution(int[][] board, int[] moves) {
@@ -30,7 +9,7 @@ class Solution {
         // but 각 칸의 stack을 구성하는 것보다는 현재의 move를 저장하는 것이 더 효율적 -> 배열 5개보다는 1개가 더 효율적이니까
         int[] currentMoves = new int[board.length];
         for(int i=0;i<currentMoves.length;i++) currentMoves[i] = 0;
-        Stack basket = new Stack(moves.length);
+        Stack<Integer> basket = new Stack<>();
         
         int index=0;
         for(int move : moves){
@@ -41,15 +20,11 @@ class Solution {
                 else break;
             }
             if(index > board.length-1) continue;  
-            basket.push(board[index][move-1]); 
-            currentMoves[move-1] = index+1;
-    
-            if(basket.checkDuplication()){
-                 basket.pop(); 
-                 basket.pop();
-                 answer+=2;
+            if((!basket.isEmpty()) && basket.peek() == board[index][move-1]){
+                basket.pop(); answer+=2;
             }
-          
+            else basket.push(board[index][move-1]); 
+            currentMoves[move-1] = index+1;
         }
         
         return answer;
