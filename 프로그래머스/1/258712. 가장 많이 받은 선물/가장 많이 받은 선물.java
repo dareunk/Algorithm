@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.stream.*;
+
 
 class Solution {
     public int solution(String[] friends, String[] gifts) {
@@ -15,14 +17,19 @@ class Solution {
         // 행: 선물 준 기록, 열: 선물 받은 기록
         int[] finalScore = new int[friends.length];
         int[][] gift = new int[friends.length][friends.length];
+        int[] giftScore = new int[friends.length];
+    
         List<String> list = Arrays.asList(friends);
         
         for(int i=0;i<gifts.length;i++){
             String[] info = gifts[i].split(" ");
             gift[list.indexOf(info[0])][list.indexOf(info[1])]++;
+            giftScore[list.indexOf(info[0])]++;
+            giftScore[list.indexOf(info[1])]--;
+        
         }
         //System.out.println(Arrays.deepToString(gift));
-        
+        /*
         int[] giftScore = new int[friends.length];
         for(int i=0;i<friends.length;i++){
             int sent = 0;
@@ -33,7 +40,7 @@ class Solution {
             }
             giftScore[i] = sent - given;
         }
-        
+        */
         
         for(int i=0;i<friends.length;i++){
             for(int j=0;j<friends.length;j++){
@@ -47,8 +54,11 @@ class Solution {
         }
         
         // finalScore이 가장 큰 값만 반환
-        Arrays.sort(finalScore);
-        answer = finalScore[finalScore.length-1];
+        //Arrays.sort(finalScore);
+        List<Integer> list1 = Arrays.stream(finalScore).boxed().collect(Collectors.toList());
+        list1.sort(Comparator.reverseOrder());
+        answer = list1.get(0);
+        //answer = finalScore[finalScore.length-1];
         return answer;
     }
 }
