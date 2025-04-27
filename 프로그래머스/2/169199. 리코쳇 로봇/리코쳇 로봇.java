@@ -44,7 +44,8 @@ class Solution {
                  }
                  
                  nx -= dx[i]; ny -= dy[i];
-                 if(visited[nx][ny] || (p.x == nx && p.y == ny)) continue;
+               //  if(visited[nx][ny] || (p.x == nx && p.y == ny)) continue;
+                if(visited[nx][ny]) continue;
                  visited[nx][ny] = true;
                  q.offer(new board(nx, ny, p.depth+1));
              }
