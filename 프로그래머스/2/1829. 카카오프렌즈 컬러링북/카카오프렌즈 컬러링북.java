@@ -12,48 +12,37 @@ import java.util.*;
 import java.util.stream.*;
 class Solution {
     static boolean[][] visited;
-    static int[][] PIC;
-    static int M;
-    static int N;
-    static int max = 0;
     public int[] solution(int m, int n, int[][] picture) {
         int numberOfArea = 0;
         int maxSizeOfOneArea = 0;
         visited = new boolean[m][n];
-        PIC=picture;
-        M=m;
-        N=n;
-        HashSet<Integer> set = new HashSet<>();
+     
         for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(picture[i][j] > 0) set.add(picture[i][j]);
-            }
-        }
-        for(Integer k : set){
-            for(int i=0;i<m;i++){
                 for(int j=0;j<n;j++){
-                    dfs(i,j,k.intValue());    
-                    if(max > maxSizeOfOneArea) maxSizeOfOneArea = max;
-                    if(max>0) numberOfArea++;
-                    max =0;
+                    if(!visited[i][j] && picture[i][j] > 0){
+                        int max = dfs(picture, m, n, i, j, picture[i][j]);
+                        maxSizeOfOneArea = Math.max(maxSizeOfOneArea, max);
+                        numberOfArea++;
+                    }    
                 }
-            }      
-        }
+        }      
+        
       
         int[] answer = new int[2];
         answer[0] = numberOfArea;
         answer[1] = maxSizeOfOneArea;
         return answer;
     }
-    public static void dfs(int x, int y, int target){
-        if(x<0 || x>=M || y<0 || y>=N) return;
-        if(visited[x][y] || PIC[x][y]!=target) return;
+    public static int dfs(int[][] picture, int m, int n, int x, int y, int target){
+        if(x<0 || x>=m|| y<0 || y>=n) return 0;
+        if(visited[x][y] || picture[x][y]!=target) return 0;
         
         visited[x][y] = true;
-        max++;
-        dfs(x+1,y,target);
-        dfs(x, y+1,target);
-        dfs(x-1, y, target);
-        dfs(x, y-1, target);
+        int size = 1;
+        size+=dfs(picture,m,n, x+1,y,target);
+        size+=dfs(picture,m,n,x, y+1,target);
+        size+=dfs(picture,m,n,x-1, y, target);
+        size+= dfs(picture,m,n,x, y-1, target);
+        return size;
     }
 }
